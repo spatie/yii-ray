@@ -21,7 +21,7 @@
     "require": {
         "php": "^7.4|^8.0",
         "spatie/backtrace": "^1.0",
-        "spatie/ray": "^1.3",
+        "spatie/ray": "^1.8",
         "symfony/stopwatch": "4.2|^5.2",
         "tightenco/collect": "^8.19",
         "yiisoft/yii2": "^2.0.40",
