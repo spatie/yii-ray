@@ -1,5 +1,7 @@
-# _____ Change Log
+# Changelog
 
-## 1.0.0 under development
+All notable changes to `yii-ray` will be documented in this file
 
-- Initial release.
+## 0.0.1 - 2021-01-14
+
+- Experimental release
