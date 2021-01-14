@@ -31,7 +31,7 @@ class Ray extends BaseRay
 
     public function disabled(): bool
     {
-        return !self::$enabled;
+        return ! self::$enabled;
     }
 
     public function showEvents($callable = null): self

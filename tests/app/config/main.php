@@ -20,7 +20,7 @@ $config = [
             'attributes' => [
                 PDO::MYSQL_ATTR_INIT_COMMAND => 'SET sql_mode = "STRICT_ALL_TABLES"',
             ],
-        ]
+        ],
     ],
 ];
 

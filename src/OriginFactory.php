@@ -6,10 +6,10 @@ use Spatie\Backtrace\Backtrace;
 use Spatie\Backtrace\Frame;
 use Spatie\Ray\Origin\DefaultOriginFactory;
 use Spatie\Ray\Origin\Origin;
+use Spatie\Ray\Ray;
 use Tightenco\Collect\Support\Collection;
 use yii\base\Component;
 use yii\base\Event;
-use Spatie\Ray\Ray;
 
 class OriginFactory extends DefaultOriginFactory
 {

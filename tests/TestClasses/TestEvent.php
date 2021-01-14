@@ -6,5 +6,4 @@ use yii\base\Event;
 
 class TestEvent extends Event
 {
-
 }
