@@ -13,4 +13,11 @@
             <directory name="vendor"/>
         </ignoreFiles>
     </projectFiles>
+    <issueHandlers>
+        <UndefinedClass>
+            <errorLevel type="suppress">
+                <referencedClass name="Yii" />
+            </errorLevel>
+        </UndefinedClass>
+    </issueHandlers>
 </psalm>
