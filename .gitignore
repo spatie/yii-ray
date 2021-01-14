@@ -29,4 +29,4 @@ phpunit.phar
 /phpunit.xml
 # phpunit cache
 .phpunit.result.cache
-
+.php_cs.cache
