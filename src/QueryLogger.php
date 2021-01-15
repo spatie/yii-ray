@@ -44,7 +44,8 @@ class QueryLogger extends Target
         $messages = static::filterMessages(
             $messages,
             $this->getLevels(),
-            $this->categories, $this->except
+            $this->categories,
+            $this->except
         );
 
         $messages = (new Collection($messages))

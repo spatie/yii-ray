@@ -4,7 +4,6 @@ namespace Spatie\YiiRay\Tests;
 
 use Spatie\Ray\Settings\Settings;
 use Spatie\Snapshots\MatchesSnapshots;
-use Spatie\YiiRay\QueryLogger;
 use Spatie\YiiRay\Tests\TestClasses\TestEvent;
 use Yii;
 use yii\helpers\ArrayHelper;
