@@ -42,12 +42,24 @@ class OriginFactory extends DefaultOriginFactory
         /** @var Frame|null $rayFrame */
         $rayFrame = $frames[$indexOfRay] ?? null;
 
-        if (! $rayFrame) {
-            return null;
-        }
+        $rayFunctionFrame = $frames[$indexOfRay + 2] ?? null;
 
         /** @var Frame|null $foundFrame */
         $originFrame = $frames[$indexOfRay + 1] ?? null;
+
+        if ($originFrame && str_ends_with($originFrame->file, Ray::makePathOsSafe('ray/src/helpers.php'))) {
+            $framesAbove = 2;
+
+            if ($rayFunctionFrame && $rayFunctionFrame->method === 'rd') {
+                $framesAbove = 3;
+            }
+
+            $originFrame = $frames[$indexOfRay + $framesAbove] ?? null;
+        }
+
+        if (! $rayFrame) {
+            return null;
+        }
 
         if ($originFrame && str_ends_with($originFrame->file, Ray::makePathOsSafe('ray/src/helpers.php'))) {
             $originFrame = $frames[$indexOfRay + 2] ?? null;
