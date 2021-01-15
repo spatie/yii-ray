@@ -4,6 +4,7 @@ namespace Spatie\YiiRay\Tests;
 
 use Spatie\Ray\Settings\Settings;
 use Spatie\Snapshots\MatchesSnapshots;
+use Spatie\YiiRay\QueryLogger;
 use Spatie\YiiRay\Tests\TestClasses\TestEvent;
 use Yii;
 use yii\helpers\ArrayHelper;
@@ -106,6 +107,98 @@ class RayTest extends TestCase
 
         $this->assertCount(1, $this->client->sentPayloads());
         $this->assertEquals('event in callable', ArrayHelper::getValue($this->client->sentPayloads(), '0.payloads.0.content.name'));
+    }
+
+    /** @test */
+    public function it_can_start_logging_queries()
+    {
+        Yii::$app->db->createCommand('CREATE TABLE if not exists elements (
+            id INTEGER PRIMARY KEY
+        )')->query();
+
+        ray()->enable();
+        ray()->showQueries();
+
+        Yii::$app->db->createCommand('SELECT * FROM elements limit 1')->queryAll();
+
+        ray()->stopShowingQueries();
+
+        $this->assertCount(1, $this->client->sentPayloads());
+    }
+
+    /** @test */
+    public function it_can_start_logging_queries_using_alias()
+    {
+        Yii::$app->db->createCommand('CREATE TABLE if not exists elements (
+            id INTEGER PRIMARY KEY
+        )')->query();
+
+        ray()->enable();
+        ray()->queries();
+
+        Yii::$app->db->createCommand('SELECT * FROM elements limit 1')->queryAll();
+
+        ray()->stopShowingQueries();
+
+        $this->assertCount(1, $this->client->sentPayloads());
+    }
+
+    /** @test */
+    public function it_can_stop_logging_queries()
+    {
+        Yii::$app->db->createCommand('CREATE TABLE if not exists elements (
+            id INTEGER PRIMARY KEY
+        )')->query();
+
+        ray()->enable();
+        ray()->showQueries();
+
+        Yii::$app->db->createCommand('SELECT * FROM elements limit 1')->queryAll();
+        Yii::$app->db->createCommand('SELECT * FROM elements limit 1')->queryAll();
+
+        ray()->stopShowingQueries();
+
+        $this->assertCount(2, $this->client->sentPayloads());
+
+        Yii::$app->db->createCommand('SELECT * FROM elements limit 1')->queryAll();
+        $this->assertCount(2, $this->client->sentPayloads());
+    }
+
+    /** @test */
+    public function calling_log_queries_twice_will_not_log_all_queries_twice()
+    {
+        Yii::$app->db->createCommand('CREATE TABLE if not exists elements (
+            id INTEGER PRIMARY KEY
+        )')->query();
+
+        ray()->enable();
+        ray()->showQueries();
+        ray()->showQueries();
+
+        Yii::$app->db->createCommand('SELECT * FROM elements limit 1')->queryAll();
+
+        ray()->stopShowingQueries();
+
+        $this->assertCount(1, $this->client->sentPayloads());
+    }
+
+    /** @test */
+    public function it_can_log_all_queries_in_a_callable()
+    {
+        Yii::$app->db->createCommand('CREATE TABLE if not exists elements (
+            id INTEGER PRIMARY KEY
+        )')->query();
+
+        ray()->enable();
+        ray()->showQueries(function () {
+            // will be logged
+            Yii::$app->db->createCommand('SELECT * FROM elements limit 1')->queryAll();
+        });
+        $this->assertCount(1, $this->client->sentPayloads());
+
+        // will not be logged
+        Yii::$app->db->createCommand('SELECT * FROM elements limit 1')->queryAll();
+        $this->assertCount(1, $this->client->sentPayloads());
     }
 
     /** @test */

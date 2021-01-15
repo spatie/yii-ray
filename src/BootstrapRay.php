@@ -9,11 +9,15 @@ use Spatie\Ray\Settings\SettingsFactory;
 use Yii;
 use yii\base\BootstrapInterface;
 use yii\base\Event;
+use yii\log\Logger;
 
 class BootstrapRay implements BootstrapInterface
 {
     /** @var \yii\base\Application */
     private $app;
+
+    /** @var QueryLogger */
+    public $logTarget;
 
     public function bootstrap($app)
     {
@@ -23,6 +27,7 @@ class BootstrapRay implements BootstrapInterface
             ->registerSettings()
             ->registerBindings()
             ->listenForEvents()
+            ->registerLogTarget()
         ;
     }
 
@@ -72,6 +77,21 @@ class BootstrapRay implements BootstrapInterface
         Event::on('*', '*', function ($event) {
             Yii::$container->get(EventLogger::class)->handleEvent($event);
         });
+
+        return $this;
+    }
+
+    protected function registerLogTarget(): self
+    {
+        Yii::$container->setSingleton(QueryLogger::class, function () {
+            return new QueryLogger([
+                'enabled' => false,
+                'levels' => Logger::LEVEL_PROFILE,
+                'categories' => ['yii\db\Command::query', 'yii\db\Command::execute'],
+            ]);
+        });
+
+        $this->app->getLog()->targets[] = Yii::$container->get(QueryLogger::class);
 
         return $this;
     }

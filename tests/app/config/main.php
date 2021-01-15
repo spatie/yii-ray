@@ -7,6 +7,11 @@ $config = [
     'bootstrap' => [
     ],
     'components' => [
+        'db' => [
+            'class' => \yii\db\Connection::class,
+            'dsn' => 'sqlite::memory:',
+            'charset' => 'utf8',
+        ],
     ],
 ];
 

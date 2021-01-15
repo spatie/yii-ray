@@ -10,6 +10,8 @@ class Ray extends BaseRay
 {
     public static bool $enabled = true;
 
+    private static int $flushInterval;
+
     public function enable(): self
     {
         self::$enabled = true;
@@ -54,6 +56,37 @@ class Ray extends BaseRay
     public function events($callable = null): self
     {
         return $this->showEvents($callable);
+    }
+
+    public function showQueries($callable = null): self
+    {
+        $wasLoggingQueries = Yii::$container->get(QueryLogger::class)->enabled;
+
+        if (! $wasLoggingQueries) {
+            Yii::$container->get(QueryLogger::class)->startLogginQueries();
+        }
+
+        if (! is_null($callable)) {
+            $callable();
+
+            if (! $wasLoggingQueries) {
+                $this->stopShowingQueries();
+            }
+        }
+
+        return $this;
+    }
+
+    public function queries($callable = null): self
+    {
+        return $this->showQueries($callable = null);
+    }
+
+    public function stopShowingQueries(): self
+    {
+        Yii::$container->get(QueryLogger::class)->stopLoggingQueries();
+
+        return $this;
     }
 
     public function stopShowingEvents(): self

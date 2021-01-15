@@ -2,6 +2,10 @@
 
 All notable changes to `yii-ray` will be documented in this file
 
-## 0.0.1 - 2021-01-14
+## 1.1.0 - 2021-01-15
 
-- Experimental release
+- Add `showQueries` support.
+
+## 1.0.0 - 2021-01-14
+
+- Initial release
