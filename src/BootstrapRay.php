@@ -16,9 +16,6 @@ class BootstrapRay implements BootstrapInterface
     /** @var \yii\base\Application */
     private $app;
 
-    /** @var QueryLogger */
-    public $logTarget;
-
     public function bootstrap($app)
     {
         $this->app = $app;
@@ -50,7 +47,9 @@ class BootstrapRay implements BootstrapInterface
     {
         $settings = Yii::$container->get(Settings::class);
 
-        Yii::$container->set(Client::class, fn () => new Client($settings->port, $settings->host));
+        Yii::$container->set(Client::class, function () use ($settings) {
+            return new Client($settings->port, $settings->host);
+        });
 
         Yii::$container->set(Ray::class, function () {
             $client = Yii::$container->get(Client::class);
@@ -72,7 +71,9 @@ class BootstrapRay implements BootstrapInterface
 
     protected function listenForEvents(): self
     {
-        Yii::$container->setSingleton(EventLogger::class, fn () => new EventLogger());
+        Yii::$container->setSingleton(EventLogger::class, function () {
+            return new EventLogger();
+        });
 
         Event::on('*', '*', function ($event) {
             Yii::$container->get(EventLogger::class)->handleEvent($event);

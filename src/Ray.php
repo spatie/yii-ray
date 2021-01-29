@@ -8,9 +8,8 @@ use Yii;
 
 class Ray extends BaseRay
 {
-    public static bool $enabled = true;
-
-    private static int $flushInterval;
+    /** @var bool */
+    public static $enabled = true;
 
     public function enable(): self
     {

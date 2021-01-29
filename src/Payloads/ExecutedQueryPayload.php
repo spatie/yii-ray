@@ -7,7 +7,8 @@ use Yii;
 
 class ExecutedQueryPayload extends Payload
 {
-    protected array $query;
+    /** @var array */
+    protected $query;
 
     public function __construct(array $query)
     {

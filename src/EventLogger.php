@@ -8,7 +8,8 @@ use yii\base\Event;
 
 class EventLogger
 {
-    protected bool $enabled = false;
+    /** @var bool */
+    protected $enabled = false;
 
     public function enable(): self
     {

@@ -9,7 +9,8 @@ use yii\base\Event;
 
 class EventPayload extends Payload
 {
-    protected Event $event;
+    /** @var \yii\base\Event */
+    protected $event;
 
     public function __construct(Event $event)
     {
