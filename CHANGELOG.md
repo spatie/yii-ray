@@ -2,6 +2,11 @@
 
 All notable changes to `yii-ray` will be documented in this file
 
+## 1.2.1 - 2021-02-01
+
+- Drop yidas/yii2-bower-asset dependency
+
+
 ## 1.2.0 - 2021-01-29
 
 - Added PHP 7.3 support
