@@ -6,6 +6,9 @@ All notable changes to `yii-ray` will be documented in this file
 
 - Drop yidas/yii2-bower-asset dependency
 
+## 1.2.1 - 2021-02-03
+
+- Fix tests + enable / disable is now in base Ray
 
 ## 1.2.0 - 2021-01-29
 

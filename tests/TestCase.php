@@ -10,7 +10,8 @@ use Yii;
 
 class TestCase extends \PHPUnit\Framework\TestCase
 {
-    protected FakeClient $client;
+    /** @var \Spatie\YiiRay\Tests\TestClasses\FakeClient */
+    protected $client;
 
     public static function setUpBeforeClass(): void
     {
@@ -25,7 +26,7 @@ class TestCase extends \PHPUnit\Framework\TestCase
 
         $this->client = new FakeClient();
 
-        Yii::$container->setSingleton(Ray::class, function () {
+        Yii::$container->set(Ray::class, function () {
             $settings = Yii::$container->get(Settings::class);
 
             $ray = new Ray($settings, $this->client, 'fakeUuid');

@@ -205,7 +205,7 @@ class RayTest extends TestCase
     {
         ray()->enable();
 
-        Yii::$container->get(Settings::class)->remote_path = 'tests';
+        Yii::$container->get(Settings::class)->remote_path = __DIR__;
         Yii::$container->get(Settings::class)->local_path = 'local_tests';
 
         ray('test');

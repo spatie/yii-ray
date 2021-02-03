@@ -8,33 +8,6 @@ use Yii;
 
 class Ray extends BaseRay
 {
-    /** @var bool */
-    public static $enabled = true;
-
-    public function enable(): self
-    {
-        self::$enabled = true;
-
-        return $this;
-    }
-
-    public function enabled(): bool
-    {
-        return self::$enabled;
-    }
-
-    public function disable(): self
-    {
-        self::$enabled = false;
-
-        return $this;
-    }
-
-    public function disabled(): bool
-    {
-        return ! self::$enabled;
-    }
-
     public function showEvents($callable = null): self
     {
         $wasLoggingEvents = $this->eventLogger()->isLoggingEvents();
