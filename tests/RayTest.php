@@ -20,7 +20,7 @@ class RayTest extends TestCase
         ray('test');
 
         // Enable for future tests
-        ray()->enable();
+        Yii::$container->get(Settings::class)->enable = true;
 
         $this->assertCount(0, $this->client->sentPayloads());
     }
