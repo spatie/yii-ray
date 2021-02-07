@@ -2,6 +2,10 @@
 
 All notable changes to `yii-ray` will be documented in this file
 
+## 1.2.3 - 2021-02-07
+
+- fix enabled setting (#6)
+
 ## 1.2.2 - 2021-02-03
 
 - Fix tests + enable / disable is now in base Ray
