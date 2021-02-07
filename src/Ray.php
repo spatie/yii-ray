@@ -3,11 +3,23 @@
 namespace Spatie\YiiRay;
 
 use Composer\InstalledVersions;
+use Spatie\Ray\Client;
 use Spatie\Ray\Ray as BaseRay;
+use Spatie\Ray\Settings\Settings;
 use Yii;
 
 class Ray extends BaseRay
 {
+    public function __construct(Settings $settings, Client $client = null, string $uuid = null)
+    {
+        // persist the enabled setting across multiple instantiations
+        $enabled = static::$enabled;
+
+        parent::__construct($settings, $client, $uuid);
+
+        static::$enabled = $enabled;
+    }
+
     public function showEvents($callable = null): self
     {
         $wasLoggingEvents = $this->eventLogger()->isLoggingEvents();
