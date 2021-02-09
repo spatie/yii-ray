@@ -31,7 +31,7 @@ class BootstrapRay implements BootstrapInterface
     protected function registerSettings(): self
     {
         Yii::$container->setSingleton(Settings::class, function () {
-            $settings = SettingsFactory::createFromConfigFile(Yii::$app->getVendorPath() . '/../config');
+            $settings = SettingsFactory::createFromConfigFile(Yii::getAlias('@app/config'));
 
             return $settings->setDefaultSettings([
                 'enable' => YII_ENV_DEV,
