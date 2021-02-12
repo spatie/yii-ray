@@ -96,7 +96,7 @@ class Ray extends BaseRay
      */
     public function sendRequest($payloads, array $meta = []): BaseRay
     {
-        if (! static::$enabled) {
+        if (! $this->enabled()) {
             return $this;
         }
 
