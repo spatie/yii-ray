@@ -2,6 +2,10 @@
 
 All notable changes to `yii-ray` will be documented in this file
 
+## 1.2.5 - 2021-02-12
+
+- fix enabled state
+
 ## 1.2.4 - 2021-02-09
 
 - update config directory resolution to work with advanced app template
