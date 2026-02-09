@@ -51,22 +51,23 @@ class QueryLogger extends Target
             return $message[3] >= $this->started_at;
         }));
 
-        foreach ($messages as $index => $message) {
-            if (! isset($messages[$index + 1])) {
-                continue;
-            }
+        $count = count($messages);
 
-            $nextMessage = $messages[$index + 1];
-            if ($nextMessage[0] !== $message[0]) {
+        for ($i = 0; $i < $count - 1; $i++) {
+            $nextMessage = $messages[$i + 1];
+
+            if ($nextMessage[0] !== $messages[$i][0]) {
                 continue;
             }
 
             $payload = new ExecutedQueryPayload([
-                'sql' => $message[0],
-                'time' => round(($nextMessage[3] - $message[3]) * 1000, 2),
+                'sql' => $messages[$i][0],
+                'time' => round(($nextMessage[3] - $messages[$i][3]) * 1000, 2),
             ]);
 
             Yii::$container->get(Ray::class)->sendRequest($payload);
+
+            $i++;
         }
     }
 

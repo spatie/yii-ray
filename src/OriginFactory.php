@@ -24,7 +24,7 @@ class OriginFactory extends DefaultOriginFactory
 
     protected function getFrame(): ?Frame
     {
-        $frames = array_reverse(Backtrace::create()->frames());
+        $frames = array_reverse(Backtrace::create()->frames(), true);
 
         $indexOfRay = null;
         foreach ($frames as $index => $frame) {
