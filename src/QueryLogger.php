@@ -3,7 +3,6 @@
 namespace Spatie\YiiRay;
 
 use Spatie\YiiRay\Payloads\ExecutedQueryPayload;
-use Tightenco\Collect\Support\Collection;
 use Yii;
 use yii\log\Target;
 
@@ -48,34 +47,27 @@ class QueryLogger extends Target
             $this->except
         );
 
-        $messages = (new Collection($messages))
-            ->filter(function ($message) {
-                return $message[3] >= $this->started_at;
-            });
+        $messages = array_values(array_filter($messages, function ($message) {
+            return $message[3] >= $this->started_at;
+        }));
 
-        $messages->map(function ($message, $index) use ($messages) {
-            // We only process messages that have an identical next message
-            // The next index that has the same query, is the PROFILE_END query
+        foreach ($messages as $index => $message) {
             if (! isset($messages[$index + 1])) {
-                return null;
+                continue;
             }
 
-            $nextMessage = $messages[$index + 1] ?? null;
+            $nextMessage = $messages[$index + 1];
             if ($nextMessage[0] !== $message[0]) {
-                return null;
+                continue;
             }
 
-            return [
+            $payload = new ExecutedQueryPayload([
                 'sql' => $message[0],
                 'time' => round(($nextMessage[3] - $message[3]) * 1000, 2),
-            ];
-        })
-        ->filter()
-        ->each(function (array $query) {
-            $payload = new ExecutedQueryPayload($query);
+            ]);
 
             Yii::$container->get(Ray::class)->sendRequest($payload);
-        });
+        }
     }
 
     public function clear(): self

@@ -88,10 +88,8 @@ class Ray extends BaseRay
     }
 
     /**
-     * @param \Spatie\Ray\Payloads\Payload|\Spatie\Ray\Payloads\Payload[] $payloads
-     * @param array $meta
+     * @param  \Spatie\Ray\Payloads\Payload|\Spatie\Ray\Payloads\Payload[]  $payloads
      *
-     * @return \Spatie\Ray\Ray
      * @throws \Exception
      */
     public function sendRequest($payloads, array $meta = []): BaseRay

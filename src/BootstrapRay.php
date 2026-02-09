@@ -24,8 +24,7 @@ class BootstrapRay implements BootstrapInterface
             ->registerSettings()
             ->registerBindings()
             ->listenForEvents()
-            ->registerLogTarget()
-        ;
+            ->registerLogTarget();
     }
 
     protected function registerSettings(): self
