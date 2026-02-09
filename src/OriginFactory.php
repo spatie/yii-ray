@@ -7,7 +7,6 @@ use Spatie\Backtrace\Frame;
 use Spatie\Ray\Origin\DefaultOriginFactory;
 use Spatie\Ray\Origin\Origin;
 use Spatie\Ray\Ray;
-use Tightenco\Collect\Support\Collection;
 use yii\base\Component;
 use yii\base\Event;
 
@@ -25,26 +24,26 @@ class OriginFactory extends DefaultOriginFactory
 
     protected function getFrame(): ?Frame
     {
-        $frames = (new Collection(Backtrace::create()->frames()))->reverse();
+        $frames = array_reverse(Backtrace::create()->frames());
 
-        $indexOfRay = $frames->search(function (Frame $frame) {
-            if ($frame->class === Ray::class) {
-                return true;
+        $indexOfRay = null;
+        foreach ($frames as $index => $frame) {
+            if ($frame->class === Ray::class || str_starts_with($frame->file, __DIR__)) {
+                $indexOfRay = $index;
+                break;
             }
+        }
 
-            if (str_starts_with($frame->file, __DIR__)) {
-                return true;
-            }
-
-            return false;
-        });
+        if ($indexOfRay === null) {
+            return null;
+        }
 
         /** @var Frame|null $rayFrame */
         $rayFrame = $frames[$indexOfRay] ?? null;
 
         $rayFunctionFrame = $frames[$indexOfRay + 2] ?? null;
 
-        /** @var Frame|null $foundFrame */
+        /** @var Frame|null $originFrame */
         $originFrame = $frames[$indexOfRay + 1] ?? null;
 
         if ($originFrame && str_ends_with($originFrame->file, Ray::makePathOsSafe('ray/src/helpers.php'))) {
@@ -76,16 +75,14 @@ class OriginFactory extends DefaultOriginFactory
         return $originFrame;
     }
 
-    protected function findFrameForEvent(Collection $frames): ?Frame
+    protected function findFrameForEvent(array $frames): ?Frame
     {
-        $indexOfComponentCall = $frames
-            ->search(function (Frame $frame) {
-                return $frame->class === Component::class;
-            });
+        foreach ($frames as $index => $frame) {
+            if ($frame->class === Component::class) {
+                return $frames[$index + 1] ?? null;
+            }
+        }
 
-        /** @var Frame $foundFrame */
-        $foundFrame = $frames[$indexOfComponentCall + 1];
-
-        return $foundFrame ?? null;
+        return null;
     }
 }
